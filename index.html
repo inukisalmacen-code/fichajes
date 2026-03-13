@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fichaje Almacén</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}
+body{background:#1a1a2e;color:#eee;min-height:100vh}
+.hidden{display:none!important}
+nav{background:#16213e;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 10px #0005;flex-wrap:wrap;gap:8px}
+nav h1{font-size:1.2rem;color:#00b4d8;font-weight:700}
+nav .btns{display:flex;gap:8px;flex-wrap:wrap}
+nav button{background:#0f3460;border:none;color:#eee;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.85rem;transition:.2s}
+nav button.active{background:#00b4d8;color:#000;font-weight:700}
+#sync-status{font-size:.75rem;padding:4px 10px;border-radius:20px;background:#0f3460;color:#aaa}
+#sync-status.ok{background:#2d6a4f;color:#b7e4c7}
+#sync-status.err{background:#6b2737;color:#f8b4c0}
+#sync-status.syncing{background:#1a4a6b;color:#90cdf4}
+.page{max-width:960px;margin:30px auto;padding:0 16px}
+.card{background:#16213e;border-radius:14px;padding:24px;margin-bottom:20px;box-shadow:0 4px 15px #0004}
+h2{font-size:1.1rem;color:#00b4d8;margin-bottom:18px;border-bottom:1px solid #0f3460;padding-bottom:10px}
+label{display:block;font-size:.85rem;color:#aaa;margin-bottom:4px;margin-top:12px}
+input,select,textarea{width:100%;padding:10px 14px;border-radius:8px;border:1px solid #0f3460;background:#0f3460;color:#eee;font-size:1rem}
+input:focus,select:focus,textarea:focus{outline:2px solid #00b4d8}
+textarea{resize:vertical;min-height:70px}
+.btn{display:inline-block;padding:11px 24px;border-radius:9px;border:none;font-size:1rem;cursor:pointer;font-weight:600;transition:.2s;margin-top:14px}
+.btn-primary{background:#00b4d8;color:#000}.btn-primary:hover{background:#0096c7}
+.btn-danger{background:#e63946;color:#fff}
+.btn-warning{background:#ffd166;color:#000}
+.btn-sm{padding:6px 14px;font-size:.8rem;margin-top:0}
+#clock{font-size:3rem;font-weight:700;text-align:center;color:#00b4d8;letter-spacing:3px;margin:10px 0}
+#datestr{text-align:center;color:#aaa;margin-bottom:24px;font-size:1rem}
+#scan-status{text-align:center;padding:14px;border-radius:12px;background:#0f3460;border:2px dashed #00b4d855;color:#aaa;font-size:.95rem;margin-bottom:12px}
+#emp-saludo{font-size:1.2rem;margin-bottom:16px;color:#b7e4c7;font-weight:700;text-align:center}
+#msg-confirm{margin-top:16px;padding:16px;border-radius:10px;font-size:1rem;font-weight:600;display:none;text-align:center}
+.msg-ok{background:#2d6a4f;color:#b7e4c7}
+.msg-err{background:#6b2737;color:#f8b4c0}
+.emp-table{width:100%;border-collapse:collapse;font-size:.9rem}
+.emp-table th{background:#0f3460;padding:10px;text-align:left;color:#00b4d8}
+.emp-table td{padding:10px;border-bottom:1px solid #0f346055;vertical-align:middle}
+.emp-table tr:hover td{background:#0f346033}
+#registros-table{width:100%;border-collapse:collapse;font-size:.85rem}
+#registros-table th{background:#0f3460;padding:8px;color:#00b4d8;text-align:left}
+#registros-table td{padding:8px;border-bottom:1px solid #0f346044;vertical-align:middle}
+.tipo-Entrada{color:#80ffdb}.tipo-Salida{color:#ff6b6b}.tipo-InicioP{color:#ffd166}.tipo-FinP{color:#a8dadc}
+.popup-bg{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;z-index:999}
+.popup-box{background:#16213e;border-radius:16px;padding:30px;text-align:center;width:90%;max-width:400px;box-shadow:0 8px 30px #000a}
+.popup-box h3{color:#00b4d8;margin-bottom:18px;font-size:1.2rem}
+.admin-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.admin-tab{padding:9px 20px;border-radius:8px;border:none;background:#0f3460;color:#aaa;cursor:pointer;font-size:.9rem}
+.admin-tab.active{background:#00b4d8;color:#000;font-weight:700}
+.horas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.hora-card{background:#0f3460;border-radius:10px;padding:14px}
+.hora-card .name{font-weight:700;color:#00b4d8;margin-bottom:6px}
+.hora-card .val{font-size:1.4rem;font-weight:700;color:#80ffdb}
+.hora-card .sub{font-size:.75rem;color:#aaa;margin-top:2px}
+.filtros{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.filtros input,.filtros select{width:auto;flex:1;min-width:130px}
+/* Login Google */
+#google-login-area{text-align:center;padding:60px 20px}
+#google-login-area h2{color:#00b4d8;font-size:1.4rem;margin-bottom:12px;border:none}
+#google-login-area p{color:#aaa;margin-bottom:24px;font-size:.95rem}
+.btn-google{background:#fff;color:#333;display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:10px;font-size:1rem;font-weight:600;border:none;cursor:pointer;box-shadow:0 2px 8px #0005}
+.btn-google:hover{background:#f0f0f0}
+.btn-google svg{width:22px;height:22px}
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>📦 Fichaje Almacén</h1>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <span id="sync-status">⏳ Conectando...</span>
+    <button id="btn-reconectar" class="hidden" onclick="signIn()" style="background:#e63946;border:none;color:#fff;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.8rem">🔄 Reconectar</button>
+    <div class="btns" id="nav-btns" style="display:none">
+      <button id="nav-fichar" class="active" onclick="showPage('fichar')">Fichar</button>
+      <button id="nav-admin" onclick="showPage('admin')">Administración</button>
+      <button id="nav-registros" onclick="showPage('registros')">Registros</button>
+    </div>
+  </div>
+</nav>
+
+<!-- LOGIN GOOGLE -->
+<div id="google-login-area">
+  <h2>🔐 Inicio de sesión requerido</h2>
+  <p>Conéctate con Google para acceder a los datos de fichaje.</p>
+  <button class="btn-google" onclick="signIn()">
+    <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4c-7.7 0-14.4 4.4-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5.1l-6.2-5.2C29.4 35.5 26.8 36 24 36c-5.2 0-9.6-2.9-11.3-7.1l-6.6 4.8C9.7 39.7 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.4-2.5 4.4-4.6 5.8l6.2 5.2C40.8 35.5 44 30.2 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+    Conectar con Google
+  </button>
+</div>
+
+<!-- PAGES -->
+<div id="app-pages" class="hidden">
+
+<!-- PAGE FICHAR -->
+<div class="page" id="page-fichar">
+  <div class="card" style="text-align:center">
+    <div id="clock">00:00:00</div>
+    <div id="datestr"></div>
+    <div id="scan-status">📷 Escanea tu tarjeta QR o escribe el ID y pulsa Enter</div>
+    <input id="qr-input" type="text" autocomplete="off" placeholder="Esperando lectura QR..."
+      style="max-width:340px;margin:0 auto 10px;display:block;font-size:1.1rem;text-align:center;letter-spacing:2px"
+      onkeydown="if(event.key==='Enter')procesarQRInput()">
+    <div id="fichaje-tipo-area" class="hidden" style="margin-top:16px">
+      <div id="emp-saludo"></div>
+      <label>Tipo de fichaje</label>
+      <select id="tipo-select">
+        <option value="Entrada">🟢 Entrada</option>
+        <option value="Inicio Pausa">🟡 Inicio Pausa</option>
+        <option value="Fin Pausa">🔵 Fin Pausa</option>
+        <option value="Salida">🔴 Salida</option>
+      </select>
+      <label>Comentario (opcional)</label>
+      <textarea id="comentario" placeholder="Ej: Llegada tardía por incidencia..."></textarea>
+      <br>
+      <button class="btn btn-primary" onclick="registrarFichaje()">✅ Registrar Fichaje</button>
+      <button class="btn btn-sm" onclick="cancelarFichaje()" style="background:#0f3460;margin-left:8px">Cancelar</button>
+    </div>
+    <div id="msg-confirm"></div>
+  </div>
+</div>
+
+<!-- PAGE ADMIN -->
+<div class="page hidden" id="page-admin">
+  <div class="card" id="admin-lock">
+    <div style="text-align:center;padding:20px 0">
+      <h2 style="border:none;font-size:1.3rem;margin-bottom:12px">🔒 Acceso Administración</h2>
+      <input type="password" id="admin-pass-input" placeholder="Contraseña" maxlength="20"
+        style="max-width:260px;margin:0 auto 10px;display:block;text-align:center"
+        onkeydown="if(event.key==='Enter')checkAdminPass()">
+      <button class="btn btn-primary" onclick="checkAdminPass()">Entrar</button>
+      <p id="admin-lock-msg" style="color:#ff6b6b;margin-top:10px;font-size:.9rem"></p>
+      <p style="color:#555;font-size:.78rem;margin-top:14px">Contraseña por defecto: <b style="color:#aaa">admin1234</b></p>
+    </div>
+  </div>
+  <div id="admin-panel" class="hidden">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+      <button class="btn btn-sm" style="background:#0f3460" onclick="lockAdmin()">🔒 Cerrar sesión admin</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="adminTab('empleados')">👥 Empleados</button>
+      <button class="admin-tab" onclick="adminTab('horas')">⏱ Horas trabajadas</button>
+      <button class="admin-tab" onclick="adminTab('clave')">🔑 Cambiar clave</button>
+    </div>
+    <div id="atab-empleados">
+      <div class="card">
+        <h2>➕ Dar de alta empleado</h2>
+        <label>Nombre completo</label><input type="text" id="emp-nombre" placeholder="Ej: Juan García">
+        <label>PIN (4-6 dígitos)</label><input type="text" id="emp-pin" placeholder="1234" maxlength="6" inputmode="numeric">
+        <label>Puesto / Turno</label><input type="text" id="emp-puesto" placeholder="Ej: Operario Turno Mañana">
+        <button class="btn btn-primary" onclick="altaEmpleado()">Dar de alta</button>
+        <div id="admin-msg" style="margin-top:10px;font-size:.9rem"></div>
+      </div>
+      <div class="card"><h2>👥 Empleados registrados</h2><div id="emp-list"></div></div>
+    </div>
+    <div id="atab-horas" class="hidden">
+      <div class="card">
+        <h2>⏱ Resumen de horas trabajadas</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center">
+          <label style="margin:0">Desde</label><input type="date" id="h-desde" style="width:auto" onchange="renderHoras()">
+          <label style="margin:0">Hasta</label><input type="date" id="h-hasta" style="width:auto" onchange="renderHoras()">
+        </div>
+        <div id="horas-grid" class="horas-grid"></div>
+      </div>
+    </div>
+    <div id="atab-clave" class="hidden">
+      <div class="card">
+        <h2>🔑 Cambiar contraseña</h2>
+        <label>Contraseña actual</label><input type="password" id="clave-actual" maxlength="20">
+        <label>Nueva contraseña</label><input type="password" id="clave-nueva" maxlength="20">
+        <label>Repetir nueva</label><input type="password" id="clave-nueva2" maxlength="20">
+        <button class="btn btn-primary" onclick="cambiarClave()">Guardar</button>
+        <div id="clave-msg" style="margin-top:10px;font-size:.9rem"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE REGISTROS -->
+<div class="page hidden" id="page-registros">
+  <div class="card">
+    <h2>📋 Registro de fichajes</h2>
+    <div class="filtros">
+      <label style="margin:0;white-space:nowrap">Desde</label>
+      <input type="date" id="filter-desde" onchange="renderRegistros()">
+      <label style="margin:0;white-space:nowrap">Hasta</label>
+      <input type="date" id="filter-hasta" onchange="renderRegistros()">
+      <select id="filter-emp" onchange="renderRegistros()"><option value="">Todos los empleados</option></select>
+      <select id="filter-tipo" onchange="renderRegistros()">
+        <option value="">Todos los tipos</option>
+        <option>Entrada</option><option>Inicio Pausa</option><option>Fin Pausa</option><option>Salida</option>
+      </select>
+      <button class="btn btn-primary btn-sm" onclick="exportCSV()">⬇ CSV</button>
+      <button class="btn btn-sm" style="background:#0f3460" onclick="clearFilters()">✕</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table id="registros-table">
+        <thead><tr><th>Fecha</th><th>Hora</th><th>Empleado</th><th>Tipo</th><th>Comentario</th><th>Editar</th></tr></thead>
+        <tbody id="registros-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /app-pages -->
+
+<!-- POPUPS -->
+<div class="popup-bg hidden" id="qr-popup">
+  <div class="popup-box">
+    <h3 id="qr-popup-name"></h3>
+    <div id="qr-div" style="margin:0 auto 14px"></div>
+    <p style="color:#aaa;font-size:.8rem;margin-bottom:14px">Presenta este QR al fichar</p>
+    <button class="btn btn-primary btn-sm" onclick="printQR()">🖨 Imprimir tarjeta</button>
+    <button class="btn btn-sm" onclick="closeQR()" style="background:#0f3460;margin-left:8px">Cerrar</button>
+  </div>
+</div>
+
+<div class="popup-bg hidden" id="edit-pass-popup">
+  <div class="popup-box">
+    <h3>🔒 Acceso restringido</h3>
+    <p style="color:#aaa;font-size:.9rem;margin-bottom:14px">Contraseña de administrador para editar.</p>
+    <input type="password" id="edit-pass-input" placeholder="Contraseña" maxlength="20"
+      onkeydown="if(event.key==='Enter')checkEditPass()">
+    <p id="edit-pass-msg" style="color:#ff6b6b;font-size:.85rem;margin-top:8px;min-height:18px"></p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:14px">
+      <button class="btn btn-sm" style="background:#0f3460" onclick="document.getElementById('edit-pass-popup').classList.add('hidden')">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="checkEditPass()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="popup-bg hidden" id="edit-popup">
+  <div class="popup-box" style="text-align:left;max-width:440px">
+    <h3>✏️ Editar registro</h3>
+    <input type="hidden" id="edit-id">
+    <input type="hidden" id="edit-row">
+    <label>Fecha</label><input type="date" id="edit-fecha">
+    <label>Hora</label><input type="time" id="edit-hora">
+    <label>Empleado</label><select id="edit-emp"></select>
+    <label>Tipo</label>
+    <select id="edit-tipo"><option>Entrada</option><option>Inicio Pausa</option><option>Fin Pausa</option><option>Salida</option></select>
+    <label>Comentario</label><textarea id="edit-comentario"></textarea>
+    <div style="display:flex;gap:10px;margin-top:16px;justify-content:flex-end">
+      <button class="btn btn-danger btn-sm" onclick="eliminarRegistro()">Eliminar</button>
+      <button class="btn btn-sm" style="background:#0f3460" onclick="closeEdit()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="guardarEdit()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══ CONFIG ═══
+const CLIENT_ID   = '1036795389078-usmg8te1vqontted81mdasneh4idvqae.apps.googleusercontent.com';
+const SHEET_ID    = '1SpBVvd4PlLqzFWKCRmN5Baoz-OjhfoTA_VobZdVlaOw';
+const SHEET_EMP   = 'Empleados';
+const SHEET_REC   = 'Registros';
+const SCOPES      = 'https://www.googleapis.com/auth/spreadsheets';
+const API_BASE    = 'https://sheets.googleapis.com/v4/spreadsheets';
+
+let accessToken = null;
+let employees   = [];
+let records     = [];
+let adminPass   = localStorage.getItem('adminPass') || 'admin1234';
+let adminUnlocked = false;
+let pendingEmp  = null;
+let pendingEditId = null;
+
+// ═══ GOOGLE AUTH (popup) ═══
+let tokenExpiry = 0;
+let refreshTimer = null;
+
+const REDIRECT_URI = 'http://localhost';
+
+function signIn(){
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    redirect_uri: REDIRECT_URI,
+    response_type: 'token',
+    scope: SCOPES,
+    prompt: 'select_account',
+    include_granted_scopes: 'true'
+  });
+  const url = 'https://accounts.google.com/o/oauth2/v2/auth?' + params;
+  const w = 520, h = 620;
+  const left = Math.round(screen.width/2 - w/2);
+  const top  = Math.round(screen.height/2 - h/2);
+  const popup = window.open(url, 'oauth', `width=${w},height=${h},left=${left},top=${top},toolbar=no,menubar=no`);
+
+  if(!popup){ alert('El navegador bloqueó el popup. Permite popups para este archivo e inténtalo de nuevo.'); return; }
+
+  const poll = setInterval(()=>{
+    if(popup.closed){ clearInterval(poll); return; }
+    try {
+      const href = popup.location.href;
+      if(href.includes('access_token')){
+        clearInterval(poll);
+        const hash = new URLSearchParams(popup.location.hash.replace('#',''));
+        const token = hash.get('access_token');
+        const expiresIn = parseInt(hash.get('expires_in') || '3600');
+        popup.close();
+        if(token){
+          accessToken = token;
+          tokenExpiry = Date.now() + expiresIn * 1000;
+          scheduleRefresh(expiresIn);
+          onSignedIn();
+        }
+      }
+    } catch(e){ /* cross-origin, seguimos esperando */ }
+  }, 500);
+}
+
+function scheduleRefresh(expiresIn){
+  clearTimeout(refreshTimer);
+  const delay = Math.max((expiresIn - 120) * 1000, 10000);
+  refreshTimer = setTimeout(()=>{
+    setSyncStatus('err','⚠ Sesión expirada — pulsa Reconectar');
+    document.getElementById('btn-reconectar').classList.remove('hidden');
+  }, delay);
+}
+
+function silentRefresh(){ signIn(); }
+
+function handleAuthCallback(){ /* ya no usamos redirección */ }
+
+async function onSignedIn(){
+  document.getElementById('google-login-area').classList.add('hidden');
+  document.getElementById('app-pages').classList.remove('hidden');
+  document.getElementById('nav-btns').style.display='flex';
+  setSyncStatus('syncing','⏳ Cargando...');
+  await ensureSheets();
+  await loadAll();
+  setSyncStatus('ok','✅ Conectado');
+  focusQR();
+}
+
+function setSyncStatus(cls,txt){
+  const el=document.getElementById('sync-status');
+  el.className=cls; el.textContent=txt;
+}
+
+// ═══ SHEETS API ═══
+async function sheetsRequest(method, path, body){
+  const res = await fetch(`${API_BASE}/${SHEET_ID}${path}`, {
+    method,
+    headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
+    body: body ? JSON.stringify(body) : undefined
+  });
+  if(!res.ok){ const e=await res.json(); throw new Error(e.error?.message||res.status); }
+  return res.json();
+}
+
+async function ensureSheets(){
+  // Comprueba si existen las hojas, si no las crea
+  try {
+    const meta = await sheetsRequest('GET','?fields=sheets.properties.title');
+    const titles = meta.sheets.map(s=>s.properties.title);
+    const requests=[];
+    if(!titles.includes(SHEET_EMP)) requests.push({addSheet:{properties:{title:SHEET_EMP}}});
+    if(!titles.includes(SHEET_REC)) requests.push({addSheet:{properties:{title:SHEET_REC}}});
+    if(requests.length){
+      await sheetsRequest('POST',':batchUpdate',{requests});
+      // Cabeceras
+      if(!titles.includes(SHEET_EMP))
+        await sheetsRequest('PUT',`/values/${SHEET_EMP}!A1:F1?valueInputOption=RAW`,{values:[['id','nombre','pin','puesto','alta','qrData']]});
+      if(!titles.includes(SHEET_REC))
+        await sheetsRequest('PUT',`/values/${SHEET_REC}!A1:G1?valueInputOption=RAW`,{values:[['id','empId','empNombre','fecha','hora','tipo','comentario']]});
+    }
+  } catch(e){ setSyncStatus('err','⚠ Error sheets: '+e.message); }
+}
+
+async function loadAll(){
+  try {
+    const [empRes, recRes] = await Promise.all([
+      sheetsRequest('GET',`/values/${SHEET_EMP}!A:F`),
+      sheetsRequest('GET',`/values/${SHEET_REC}!A:G`)
+    ]);
+    const empRows = (empRes.values||[]).slice(1);
+    employees = empRows.map(r=>({id:r[0],nombre:r[1],pin:r[2],puesto:r[3],alta:r[4],qrData:r[5]||r[0]}));
+    const recRows = (recRes.values||[]).slice(1);
+    records = recRows.map((r,i)=>({
+      id:r[0], empId:r[1], empNombre:r[2],
+      fecha:r[3], hora:r[4], tipo:r[5], comentario:r[6]||'',
+      fechaISO: isoFromES(r[3]), horaISO: (r[4]||'').slice(0,5),
+      _row: i+2
+    })).reverse();
+  } catch(e){ setSyncStatus('err','⚠ Error carga: '+e.message); }
+}
+
+function isoFromES(d){
+  if(!d) return '';
+  const p=d.split('/');
+  if(p.length===3) return `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
+  return d;
+}
+
+async function appendRow(sheet, values){
+  await sheetsRequest('POST',`/values/${sheet}!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,{values:[values]});
+}
+
+async function updateRow(sheet, row, values){
+  const col = String.fromCharCode(64+values.length);
+  await sheetsRequest('PUT',`/values/${sheet}!A${row}:${col}${row}?valueInputOption=RAW`,{values:[values]});
+}
+
+async function deleteRow(sheet, row){
+  // Borrar contenido de la fila
+  const meta = await sheetsRequest('GET','?fields=sheets.properties');
+  const sheetMeta = meta.sheets.find(s=>s.properties.title===sheet);
+  const sheetId = sheetMeta.properties.sheetId;
+  await sheetsRequest('POST',':batchUpdate',{requests:[{deleteDimension:{range:{sheetId,dimension:'ROWS',startIndex:row-1,endIndex:row}}}]});
+}
+
+// ═══ RELOJ ═══
+function tick(){
+  const n=new Date();
+  document.getElementById('clock').textContent=n.toLocaleTimeString('es-ES');
+  document.getElementById('datestr').textContent=n.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+setInterval(tick,1000);tick();
+
+// ═══ NAV ═══
+function showPage(p){
+  ['fichar','admin','registros'].forEach(x=>{
+    document.getElementById('page-'+x).classList.toggle('hidden',x!==p);
+    document.getElementById('nav-'+x).classList.toggle('active',x===p);
+  });
+  if(p==='registros'){populateEmpFilter();renderRegistros();}
+  if(p==='admin') renderEmpList();
+  if(p==='fichar') focusQR();
+}
+
+// ═══ QR INPUT ═══
+function focusQR(){ const i=document.getElementById('qr-input'); if(i) i.focus(); }
+function procesarQRInput(){
+  const inp=document.getElementById('qr-input');
+  const code=inp.value.trim(); inp.value='';
+  if(code) processQR(code);
+}
+function processQR(code){
+  const emp=employees.find(e=>e.id===code||e.qrData===code);
+  if(!emp){showMsg('❌ QR no reconocido. Contacta con administración.','err');return;}
+  pendingEmp=emp;
+  document.getElementById('emp-saludo').textContent='👋 Hola, '+emp.nombre+' — '+emp.puesto;
+  document.getElementById('fichaje-tipo-area').classList.remove('hidden');
+  document.getElementById('comentario').value='';
+  document.getElementById('tipo-select').focus();
+}
+
+// ═══ FICHAJE ═══
+async function registrarFichaje(){
+  if(!pendingEmp) return;
+  const tipo=document.getElementById('tipo-select').value;
+  const comentario=document.getElementById('comentario').value.trim();
+  const now=new Date();
+  const fecha=now.toLocaleDateString('es-ES');
+  const hora=now.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const id='R'+Date.now();
+  setSyncStatus('syncing','⏳ Guardando...');
+  try {
+    await appendRow(SHEET_REC,[id,pendingEmp.id,pendingEmp.nombre,fecha,hora,tipo,comentario]);
+    const iconos={'Entrada':'🟢','Inicio Pausa':'🟡','Fin Pausa':'🔵','Salida':'🔴'};
+    showMsg(iconos[tipo]+' <b>'+tipo+'</b> registrada para <b>'+pendingEmp.nombre+'</b><br>'+hora+(comentario?'<br><span style="font-size:.85rem;opacity:.8">💬 '+comentario+'</span>':''),'ok');
+    records.unshift({id,empId:pendingEmp.id,empNombre:pendingEmp.nombre,fecha,hora,tipo,comentario,fechaISO:now.toISOString().slice(0,10),horaISO:hora.slice(0,5)});
+    setSyncStatus('ok','✅ Guardado');
+  } catch(e){ showMsg('❌ Error al guardar: '+e.message,'err'); setSyncStatus('err','⚠ Error sync'); }
+  pendingEmp=null;
+  document.getElementById('fichaje-tipo-area').classList.add('hidden');
+  setTimeout(()=>{ document.getElementById('msg-confirm').style.display='none'; focusQR(); setSyncStatus('ok','✅ Conectado'); },4000);
+}
+function cancelarFichaje(){
+  pendingEmp=null;
+  document.getElementById('fichaje-tipo-area').classList.add('hidden');
+  document.getElementById('msg-confirm').style.display='none';
+  focusQR();
+}
+function showMsg(html,t){
+  const el=document.getElementById('msg-confirm');
+  el.innerHTML=html; el.className='msg-'+(t==='ok'?'ok':'err'); el.style.display='block';
+}
+
+// ═══ ADMIN LOCK ═══
+function checkAdminPass(){
+  if(document.getElementById('admin-pass-input').value===adminPass){
+    adminUnlocked=true;
+    document.getElementById('admin-lock').classList.add('hidden');
+    document.getElementById('admin-panel').classList.remove('hidden');
+    document.getElementById('admin-pass-input').value='';
+    renderEmpList();
+  } else { document.getElementById('admin-lock-msg').textContent='⚠ Contraseña incorrecta.'; }
+}
+function lockAdmin(){
+  adminUnlocked=false;
+  document.getElementById('admin-lock').classList.remove('hidden');
+  document.getElementById('admin-panel').classList.add('hidden');
+}
+function adminTab(t){
+  ['empleados','horas','clave'].forEach(x=>document.getElementById('atab-'+x).classList.toggle('hidden',x!==t));
+  document.querySelectorAll('.admin-tab').forEach((b,i)=>b.classList.toggle('active',['empleados','horas','clave'][i]===t));
+  if(t==='horas') renderHoras();
+}
+
+// ═══ EMPLEADOS ═══
+async function altaEmpleado(){
+  const n=document.getElementById('emp-nombre').value.trim();
+  const p=document.getElementById('emp-pin').value.trim();
+  const pu=document.getElementById('emp-puesto').value.trim();
+  const msg=document.getElementById('admin-msg');
+  if(!n||!p){msg.textContent='⚠ Nombre y PIN obligatorios.';msg.style.color='#ff6b6b';return;}
+  if(!/^\d{4,6}$/.test(p)){msg.textContent='⚠ PIN debe tener 4-6 dígitos.';msg.style.color='#ff6b6b';return;}
+  if(employees.find(e=>e.pin===p)){msg.textContent='⚠ PIN ya en uso.';msg.style.color='#ff6b6b';return;}
+  const id='EMP-'+Date.now();
+  const alta=new Date().toLocaleDateString('es-ES');
+  setSyncStatus('syncing','⏳ Guardando...');
+  try {
+    await appendRow(SHEET_EMP,[id,n,p,pu||'—',alta,id]);
+    employees.push({id,nombre:n,pin:p,puesto:pu||'—',alta,qrData:id});
+    msg.textContent='✅ Empleado dado de alta.';msg.style.color='#80ffdb';
+    document.getElementById('emp-nombre').value='';
+    document.getElementById('emp-pin').value='';
+    document.getElementById('emp-puesto').value='';
+    renderEmpList();
+    setSyncStatus('ok','✅ Guardado');
+  } catch(e){ msg.textContent='❌ Error: '+e.message;msg.style.color='#ff6b6b'; setSyncStatus('err','⚠ Error sync'); }
+}
+function renderEmpList(){
+  const div=document.getElementById('emp-list');
+  if(!employees.length){div.innerHTML='<p style="color:#aaa">Sin empleados registrados.</p>';return;}
+  div.innerHTML=`<table class="emp-table">
+    <thead><tr><th>Nombre</th><th>Puesto</th><th>Alta</th><th>Acciones</th></tr></thead>
+    <tbody>${employees.map(e=>`<tr>
+      <td>${e.nombre}</td><td>${e.puesto}</td><td>${e.alta}</td>
+      <td>
+        <button class="btn btn-primary btn-sm" onclick="showQR('${e.id}')">🔲 QR</button>
+        <button class="btn btn-danger btn-sm" onclick="bajaEmpleado('${e.id}')" style="margin-left:6px">Eliminar</button>
+      </td></tr>`).join('')}
+    </tbody></table>`;
+}
+async function bajaEmpleado(id){
+  if(!confirm('¿Eliminar este empleado?')) return;
+  setSyncStatus('syncing','⏳ Eliminando...');
+  try {
+    const meta=await sheetsRequest('GET',`/values/${SHEET_EMP}!A:A`);
+    const rows=meta.values||[];
+    const rowIdx=rows.findIndex(r=>r[0]===id);
+    if(rowIdx>0) await deleteRow(SHEET_EMP,rowIdx+1);
+    employees=employees.filter(e=>e.id!==id);
+    renderEmpList();
+    setSyncStatus('ok','✅ Eliminado');
+  } catch(e){ alert('Error: '+e.message); setSyncStatus('err','⚠ Error'); }
+}
+
+// ═══ QR POPUP ═══
+function showQR(id){
+  const emp=employees.find(e=>e.id===id); if(!emp) return;
+  document.getElementById('qr-popup-name').textContent=emp.nombre+' — '+emp.puesto;
+  const div=document.getElementById('qr-div'); div.innerHTML='';
+  new QRCode(div,{text:emp.id,width:200,height:200,colorDark:'#00b4d8',colorLight:'#ffffff'});
+  document.getElementById('qr-popup').classList.remove('hidden');
+}
+function closeQR(){ document.getElementById('qr-popup').classList.add('hidden'); }
+function printQR(){
+  const name=document.getElementById('qr-popup-name').textContent;
+  setTimeout(()=>{
+    const canvas=document.querySelector('#qr-div canvas');
+    const img2=document.querySelector('#qr-div img');
+    const src=canvas?canvas.toDataURL():img2?img2.src:'';
+    if(!src){alert('QR no generado aún.');return;}
+    const parts=name.split('—');
+    const w=window.open('','_blank','width=420,height=560');
+    w.document.write(`<!DOCTYPE html><html><head><title>Tarjeta QR</title>
+    <style>@media print{@page{margin:0}}body{font-family:'Segoe UI',sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#fff}
+    .card{border:3px solid #00b4d8;border-radius:16px;padding:28px 24px;text-align:center;width:240px}
+    .card img{width:190px;height:190px;display:block;margin:0 auto}
+    h2{font-size:1.05rem;margin-top:14px;color:#111;font-weight:700}p{font-size:.82rem;color:#555;margin-top:5px}
+    .logo{font-size:.75rem;color:#00b4d8;margin-top:12px;letter-spacing:1px;text-transform:uppercase;font-weight:600}
+    </style></head><body><div class="card"><img src="${src}">
+    <h2>${parts[0]?.trim()}</h2><p>${parts[1]?.trim()||''}</p>
+    <div class="logo">📦 Fichaje Almacén</div></div>
+    <script>setTimeout(()=>{window.print();},400);<\/script></body></html>`);
+    w.document.close();
+  },200);
+}
+
+// ═══ HORAS ═══
+function renderHoras(){
+  const desde=document.getElementById('h-desde').value;
+  const hasta=document.getElementById('h-hasta').value;
+  const resumen={};
+  employees.forEach(e=>{resumen[e.id]={nombre:e.nombre,puesto:e.puesto,minutos:0,dias:new Set()};});
+  let recs=[...records];
+  if(desde) recs=recs.filter(r=>r.fechaISO>=desde);
+  if(hasta) recs=recs.filter(r=>r.fechaISO<=hasta);
+  employees.forEach(emp=>{
+    const er=recs.filter(r=>r.empId===emp.id).sort((a,b)=>(a.fechaISO+a.horaISO).localeCompare(b.fechaISO+b.horaISO));
+    let entrada=null;
+    er.forEach(r=>{
+      if(r.tipo==='Entrada') entrada={fecha:r.fechaISO,hora:r.horaISO};
+      if(r.tipo==='Salida'&&entrada){
+        const ini=new Date(entrada.fecha+'T'+entrada.hora);
+        const fin=new Date(r.fechaISO+'T'+r.horaISO);
+        resumen[emp.id].minutos+=Math.max(0,(fin-ini)/60000);
+        resumen[emp.id].dias.add(entrada.fecha);
+        entrada=null;
+      }
+    });
+  });
+  const grid=document.getElementById('horas-grid');
+  grid.innerHTML=Object.values(resumen).map(r=>{
+    const h=Math.floor(r.minutos/60),m=Math.round(r.minutos%60);
+    return `<div class="hora-card"><div class="name">${r.nombre}</div><div class="val">${h}h ${m}m</div><div class="sub">${r.puesto} · ${r.dias.size} día(s)</div></div>`;
+  }).join('');
+}
+
+// ═══ REGISTROS ═══
+function getFilteredRecords(){
+  const desde=document.getElementById('filter-desde').value;
+  const hasta=document.getElementById('filter-hasta').value;
+  const fe=document.getElementById('filter-emp').value;
+  const ft=document.getElementById('filter-tipo').value;
+  return records.filter(r=>{
+    if(desde&&r.fechaISO<desde) return false;
+    if(hasta&&r.fechaISO>hasta) return false;
+    if(fe&&r.empId!==fe) return false;
+    if(ft&&r.tipo!==ft) return false;
+    return true;
+  });
+}
+function populateEmpFilter(){
+  const sel=document.getElementById('filter-emp');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">Todos los empleados</option>';
+  employees.forEach(e=>sel.innerHTML+=`<option value="${e.id}">${e.nombre}</option>`);
+  sel.value=cur;
+  const sel2=document.getElementById('edit-emp');
+  if(sel2) sel2.innerHTML=employees.map(e=>`<option value="${e.id}">${e.nombre}</option>`).join('');
+}
+function renderRegistros(){
+  const data=getFilteredRecords();
+  const tbody=document.getElementById('registros-body');
+  const cl={'Entrada':'tipo-Entrada','Salida':'tipo-Salida','Inicio Pausa':'tipo-InicioP','Fin Pausa':'tipo-FinP'};
+  if(!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#aaa;padding:20px">Sin registros</td></tr>';return;}
+  tbody.innerHTML=data.map(r=>`<tr>
+    <td>${r.fecha}</td><td>${r.hora}</td><td>${r.empNombre}</td>
+    <td class="${cl[r.tipo]||''}">${r.tipo}</td>
+    <td style="color:#aaa;font-size:.82rem;max-width:160px;word-break:break-word">${r.comentario||'—'}</td>
+    <td><button class="btn btn-warning btn-sm" onclick="openEdit('${r.id}')">✏️</button></td>
+  </tr>`).join('');
+}
+function clearFilters(){
+  document.getElementById('filter-desde').value='';
+  document.getElementById('filter-hasta').value='';
+  document.getElementById('filter-emp').value='';
+  document.getElementById('filter-tipo').value='';
+  renderRegistros();
+}
+function exportCSV(){
+  const data=getFilteredRecords();
+  if(!data.length){alert('Sin datos para exportar.');return;}
+  const rows=[['Fecha','Hora','Empleado','Tipo','Comentario'],...data.map(r=>[r.fecha,r.hora,r.empNombre,r.tipo,(r.comentario||'').replace(/"/g,"'")])];
+  const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const desde=document.getElementById('filter-desde').value;
+  const hasta=document.getElementById('filter-hasta').value;
+  a.download=`fichajes${desde&&hasta?`_${desde}_${hasta}`:('_'+new Date().toISOString().slice(0,10))}.csv`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+
+// ═══ EDIT REGISTRO ═══
+function checkEditPass(){
+  if(document.getElementById('edit-pass-input').value===adminPass){
+    document.getElementById('edit-pass-popup').classList.add('hidden');
+    openEditDirect(pendingEditId); pendingEditId=null;
+  } else { document.getElementById('edit-pass-msg').textContent='⚠ Contraseña incorrecta.'; }
+}
+function openEdit(id){
+  if(!adminUnlocked){
+    pendingEditId=id;
+    document.getElementById('edit-pass-input').value='';
+    document.getElementById('edit-pass-msg').textContent='';
+    document.getElementById('edit-pass-popup').classList.remove('hidden');
+    return;
+  }
+  openEditDirect(id);
+}
+function openEditDirect(id){
+  populateEmpFilter();
+  const r=records.find(x=>x.id===id); if(!r) return;
+  document.getElementById('edit-id').value=r.id;
+  document.getElementById('edit-row').value=r._row||'';
+  document.getElementById('edit-fecha').value=r.fechaISO||'';
+  document.getElementById('edit-hora').value=r.horaISO||r.hora.slice(0,5);
+  document.getElementById('edit-emp').value=r.empId;
+  document.getElementById('edit-tipo').value=r.tipo;
+  document.getElementById('edit-comentario').value=r.comentario||'';
+  document.getElementById('edit-popup').classList.remove('hidden');
+}
+function closeEdit(){ document.getElementById('edit-popup').classList.add('hidden'); }
+async function guardarEdit(){
+  const id=document.getElementById('edit-id').value;
+  const row=parseInt(document.getElementById('edit-row').value);
+  const idx=records.findIndex(x=>x.id===id); if(idx<0) return;
+  const fechaISO=document.getElementById('edit-fecha').value;
+  const horaISO=document.getElementById('edit-hora').value;
+  const empId=document.getElementById('edit-emp').value;
+  const emp=employees.find(e=>e.id===empId);
+  const tipo=document.getElementById('edit-tipo').value;
+  const comentario=document.getElementById('edit-comentario').value.trim();
+  const fecha=fechaISO?new Date(fechaISO+'T12:00:00').toLocaleDateString('es-ES'):'';
+  setSyncStatus('syncing','⏳ Guardando...');
+  try {
+    if(row) await updateRow(SHEET_REC,row,[id,empId,emp?emp.nombre:records[idx].empNombre,fecha,horaISO+':00',tipo,comentario]);
+    records[idx]={...records[idx],empId,empNombre:emp?emp.nombre:records[idx].empNombre,fecha,fechaISO,hora:horaISO+':00',horaISO,tipo,comentario};
+    setSyncStatus('ok','✅ Guardado');
+    closeEdit(); renderRegistros();
+  } catch(e){ alert('Error: '+e.message); setSyncStatus('err','⚠ Error sync'); }
+}
+async function eliminarRegistro(){
+  const id=document.getElementById('edit-id').value;
+  const row=parseInt(document.getElementById('edit-row').value);
+  if(!confirm('¿Eliminar este registro?')) return;
+  setSyncStatus('syncing','⏳ Eliminando...');
+  try {
+    if(row) await deleteRow(SHEET_REC,row);
+    records=records.filter(x=>x.id!==id);
+    setSyncStatus('ok','✅ Eliminado');
+    closeEdit(); renderRegistros();
+  } catch(e){ alert('Error: '+e.message); setSyncStatus('err','⚠ Error sync'); }
+}
+
+// ═══ CAMBIAR CLAVE ═══
+function cambiarClave(){
+  const actual=document.getElementById('clave-actual').value;
+  const nueva=document.getElementById('clave-nueva').value;
+  const nueva2=document.getElementById('clave-nueva2').value;
+  const msg=document.getElementById('clave-msg');
+  if(actual!==adminPass){msg.textContent='⚠ Contraseña actual incorrecta.';msg.style.color='#ff6b6b';return;}
+  if(nueva.length<4){msg.textContent='⚠ Mínimo 4 caracteres.';msg.style.color='#ff6b6b';return;}
+  if(nueva!==nueva2){msg.textContent='⚠ Las contraseñas no coinciden.';msg.style.color='#ff6b6b';return;}
+  adminPass=nueva; localStorage.setItem('adminPass',adminPass);
+  msg.textContent='✅ Contraseña actualizada.';msg.style.color='#80ffdb';
+  ['clave-actual','clave-nueva','clave-nueva2'].forEach(id=>document.getElementById(id).value='');
+}
+
+// ═══ INIT ═══
+initGSI();
+</script>
+</body>
+</html>
