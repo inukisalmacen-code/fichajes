@@ -24,11 +24,12 @@ h2{font-size:1.1rem;color:#00b4d8;margin-bottom:18px;border-bottom:1px solid #0f
 label{display:block;font-size:.85rem;color:#aaa;margin-bottom:4px;margin-top:12px}
 input,select,textarea{width:100%;padding:10px 14px;border-radius:8px;border:1px solid #0f3460;background:#0f3460;color:#eee;font-size:1rem}
 input:focus,select:focus,textarea:focus{outline:2px solid #00b4d8}
-textarea{resize:vertical;min-height:70px}
+textarea{resize:vertical;min-height:60px}
 .btn{display:inline-block;padding:11px 24px;border-radius:9px;border:none;font-size:1rem;cursor:pointer;font-weight:600;transition:.2s;margin-top:14px}
 .btn-primary{background:#00b4d8;color:#000}.btn-primary:hover{background:#0096c7}
 .btn-danger{background:#e63946;color:#fff}
 .btn-warning{background:#ffd166;color:#000}
+.btn-success{background:#2d6a4f;color:#b7e4c7}
 .btn-sm{padding:6px 14px;font-size:.8rem;margin-top:0}
 #clock{font-size:3rem;font-weight:700;text-align:center;color:#00b4d8;letter-spacing:3px;margin:10px 0}
 #datestr{text-align:center;color:#aaa;margin-bottom:24px;font-size:1rem}
@@ -41,29 +42,42 @@ textarea{resize:vertical;min-height:70px}
 .emp-table th{background:#0f3460;padding:10px;text-align:left;color:#00b4d8}
 .emp-table td{padding:10px;border-bottom:1px solid #0f346055;vertical-align:middle}
 .emp-table tr:hover td{background:#0f346033}
-#registros-table{width:100%;border-collapse:collapse;font-size:.85rem}
+#registros-table{width:100%;border-collapse:collapse;font-size:.82rem}
 #registros-table th{background:#0f3460;padding:8px;color:#00b4d8;text-align:left}
-#registros-table td{padding:8px;border-bottom:1px solid #0f346044;vertical-align:middle}
+#registros-table td{padding:7px 8px;border-bottom:1px solid #0f346044;vertical-align:middle}
 .tipo-Entrada{color:#80ffdb}.tipo-Salida{color:#ff6b6b}.tipo-InicioP{color:#ffd166}.tipo-FinP{color:#a8dadc}
 .popup-bg{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;z-index:999}
-.popup-box{background:#16213e;border-radius:16px;padding:30px;text-align:center;width:90%;max-width:400px;box-shadow:0 8px 30px #000a}
+.popup-box{background:#16213e;border-radius:16px;padding:30px;text-align:center;width:90%;max-width:420px;box-shadow:0 8px 30px #000a}
 .popup-box h3{color:#00b4d8;margin-bottom:18px;font-size:1.2rem}
 .admin-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-.admin-tab{padding:9px 20px;border-radius:8px;border:none;background:#0f3460;color:#aaa;cursor:pointer;font-size:.9rem}
+.admin-tab{padding:9px 18px;border-radius:8px;border:none;background:#0f3460;color:#aaa;cursor:pointer;font-size:.85rem}
 .admin-tab.active{background:#00b4d8;color:#000;font-weight:700}
-.horas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.hora-card{background:#0f3460;border-radius:10px;padding:14px}
-.hora-card .name{font-weight:700;color:#00b4d8;margin-bottom:6px}
-.hora-card .val{font-size:1.4rem;font-weight:700;color:#80ffdb}
-.hora-card .sub{font-size:.75rem;color:#aaa;margin-top:2px}
 .filtros{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
-.filtros input,.filtros select{width:auto;flex:1;min-width:130px}
+.filtros input,.filtros select{width:auto;flex:1;min-width:120px}
+/* Login */
 #google-login-area{text-align:center;padding:80px 20px}
 #google-login-area h2{color:#00b4d8;font-size:1.5rem;margin-bottom:12px;border:none}
 #google-login-area p{color:#aaa;margin-bottom:28px}
 .btn-google{background:#fff;color:#333;display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:10px;font-size:1rem;font-weight:600;border:none;cursor:pointer;box-shadow:0 2px 8px #0005}
 .btn-google:hover{background:#f0f0f0}
 .btn-google svg{width:22px;height:22px}
+/* Horas */
+.hora-card{background:#0f3460;border-radius:12px;padding:16px;margin-bottom:12px}
+.hora-card .hc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.hora-card .hc-name{font-weight:700;color:#00b4d8;font-size:1rem}
+.hora-card .hc-puesto{font-size:.78rem;color:#aaa}
+.hora-card .hc-nums{text-align:right}
+.hora-card .hc-total{font-size:1.2rem;font-weight:700;color:#eee}
+.hora-card .hc-diff{font-size:.85rem;font-weight:600;margin-top:2px}
+.hc-diff.pos{color:#80ffdb}.hc-diff.neg{color:#ff6b6b}.hc-diff.zero{color:#aaa}
+.hc-bar-bg{background:#1a1a2e;border-radius:99px;height:10px;overflow:hidden;margin-top:8px}
+.hc-bar{height:100%;border-radius:99px;transition:width .5s}
+.hc-bar.ok{background:#00b4d8}
+.hc-bar.over{background:#80ffdb}
+.hc-bar.under{background:#e63946}
+.hc-objetivo{font-size:.75rem;color:#555;margin-top:4px;text-align:right}
+/* Admin login */
+#admin-lock-wrap{text-align:center;padding:30px 0}
 </style>
 </head>
 <body>
@@ -81,7 +95,7 @@ textarea{resize:vertical;min-height:70px}
   </div>
 </nav>
 
-<!-- LOGIN -->
+<!-- LOGIN GOOGLE -->
 <div id="google-login-area">
   <h2>🔐 Inicio de sesión requerido</h2>
   <p>Conéctate con Google para acceder a los datos de fichaje.</p>
@@ -94,6 +108,7 @@ textarea{resize:vertical;min-height:70px}
 <!-- APP -->
 <div id="app-pages" class="hidden">
 
+<!-- FICHAR -->
 <div class="page" id="page-fichar">
   <div class="card" style="text-align:center">
     <div id="clock">00:00:00</div>
@@ -121,27 +136,39 @@ textarea{resize:vertical;min-height:70px}
   </div>
 </div>
 
+<!-- ADMIN -->
 <div class="page hidden" id="page-admin">
+  <!-- Login admin -->
   <div class="card" id="admin-lock">
-    <div style="text-align:center;padding:20px 0">
-      <h2 style="border:none;font-size:1.3rem;margin-bottom:12px">🔒 Acceso Administración</h2>
-      <input type="password" id="admin-pass-input" placeholder="Contraseña" maxlength="20"
-        style="max-width:260px;margin:0 auto 10px;display:block;text-align:center"
+    <div id="admin-lock-wrap">
+      <h2 style="border:none;font-size:1.3rem;margin-bottom:16px">🔒 Acceso Administración</h2>
+      <label style="max-width:280px;margin:0 auto">Usuario</label>
+      <input type="text" id="admin-user-input" placeholder="usuario" maxlength="30"
+        style="max-width:280px;margin:0 auto 0;display:block"
+        onkeydown="if(event.key==='Enter')document.getElementById('admin-pass-input').focus()">
+      <label style="max-width:280px;margin:8px auto 0">Contraseña</label>
+      <input type="password" id="admin-pass-input" placeholder="••••••••" maxlength="30"
+        style="max-width:280px;margin:0 auto 14px;display:block"
         onkeydown="if(event.key==='Enter')checkAdminPass()">
       <button class="btn btn-primary" onclick="checkAdminPass()">Entrar</button>
       <p id="admin-lock-msg" style="color:#ff6b6b;margin-top:10px;font-size:.9rem"></p>
-      <p style="color:#555;font-size:.78rem;margin-top:14px">Contraseña por defecto: <b style="color:#aaa">admin1234</b></p>
+      <p style="color:#555;font-size:.78rem;margin-top:16px">Admin por defecto — usuario: <b style="color:#aaa">admin</b> · contraseña: <b style="color:#aaa">admin1234</b></p>
     </div>
   </div>
+
+  <!-- Panel admin -->
   <div id="admin-panel" class="hidden">
-    <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <span id="admin-logged-as" style="color:#aaa;font-size:.85rem"></span>
       <button class="btn btn-sm" style="background:#0f3460" onclick="lockAdmin()">🔒 Cerrar sesión admin</button>
     </div>
     <div class="admin-tabs">
       <button class="admin-tab active" onclick="adminTab('empleados')">👥 Empleados</button>
-      <button class="admin-tab" onclick="adminTab('horas')">⏱ Horas trabajadas</button>
-      <button class="admin-tab" onclick="adminTab('clave')">🔑 Cambiar clave</button>
+      <button class="admin-tab" onclick="adminTab('horas')">⏱ Horas</button>
+      <button class="admin-tab" onclick="adminTab('admins')">🛡 Admins</button>
     </div>
+
+    <!-- TAB EMPLEADOS -->
     <div id="atab-empleados">
       <div class="card">
         <h2>➕ Dar de alta empleado</h2>
@@ -153,29 +180,49 @@ textarea{resize:vertical;min-height:70px}
       </div>
       <div class="card"><h2>👥 Empleados registrados</h2><div id="emp-list"></div></div>
     </div>
+
+    <!-- TAB HORAS -->
     <div id="atab-horas" class="hidden">
       <div class="card">
-        <h2>⏱ Resumen horas trabajadas</h2>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center">
-          <label style="margin:0">Desde</label><input type="date" id="h-desde" style="width:auto" onchange="renderHoras()">
-          <label style="margin:0">Hasta</label><input type="date" id="h-hasta" style="width:auto" onchange="renderHoras()">
+        <h2>⏱ Horas trabajadas vs objetivo</h2>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;align-items:center">
+          <div>
+            <label style="margin-top:0">Modo</label>
+            <select id="h-modo" style="width:auto" onchange="renderHoras()">
+              <option value="semana">Semana actual</option>
+              <option value="mes">Mes actual</option>
+              <option value="custom">Rango personalizado</option>
+            </select>
+          </div>
+          <div id="h-custom-wrap" style="display:none;gap:8px;flex-wrap:wrap;align-items:center">
+            <div><label style="margin-top:0">Desde</label><input type="date" id="h-desde" style="width:auto" onchange="renderHoras()"></div>
+            <div><label style="margin-top:0">Hasta</label><input type="date" id="h-hasta" style="width:auto" onchange="renderHoras()"></div>
+          </div>
+          <div>
+            <label style="margin-top:0">Objetivo (h)</label>
+            <input type="number" id="h-objetivo" value="40" min="1" max="300" style="width:80px" onchange="renderHoras()">
+          </div>
         </div>
-        <div id="horas-grid" class="horas-grid"></div>
+        <div id="horas-list"></div>
       </div>
     </div>
-    <div id="atab-clave" class="hidden">
+
+    <!-- TAB ADMINS -->
+    <div id="atab-admins" class="hidden">
       <div class="card">
-        <h2>🔑 Cambiar contraseña</h2>
-        <label>Contraseña actual</label><input type="password" id="clave-actual" maxlength="20">
-        <label>Nueva contraseña</label><input type="password" id="clave-nueva" maxlength="20">
-        <label>Repetir nueva</label><input type="password" id="clave-nueva2" maxlength="20">
-        <button class="btn btn-primary" onclick="cambiarClave()">Guardar</button>
-        <div id="clave-msg" style="margin-top:10px;font-size:.9rem"></div>
+        <h2>➕ Añadir administrador</h2>
+        <label>Usuario</label><input type="text" id="new-admin-user" placeholder="Ej: supervisor1" maxlength="30">
+        <label>Contraseña</label><input type="password" id="new-admin-pass" placeholder="••••••••" maxlength="30">
+        <label>Repetir contraseña</label><input type="password" id="new-admin-pass2" placeholder="••••••••" maxlength="30">
+        <button class="btn btn-primary" onclick="altaAdmin()">Añadir admin</button>
+        <div id="admins-msg" style="margin-top:10px;font-size:.9rem"></div>
       </div>
+      <div class="card"><h2>🛡 Administradores</h2><div id="admins-list"></div></div>
     </div>
   </div>
 </div>
 
+<!-- REGISTROS -->
 <div class="page hidden" id="page-registros">
   <div class="card">
     <h2>📋 Registro de fichajes</h2>
@@ -194,13 +241,12 @@ textarea{resize:vertical;min-height:70px}
     </div>
     <div style="overflow-x:auto">
       <table id="registros-table">
-        <thead><tr><th>Fecha</th><th>Hora</th><th>Empleado</th><th>Tipo</th><th>Comentario</th><th>Editar</th></tr></thead>
+        <thead><tr><th>Fecha</th><th>Hora</th><th>Empleado</th><th>Tipo</th><th>Comentario</th><th>Editado por</th><th>Fecha edición</th><th>✏️</th></tr></thead>
         <tbody id="registros-body"></tbody>
       </table>
     </div>
   </div>
 </div>
-
 </div><!-- /app-pages -->
 
 <!-- POPUPS -->
@@ -216,20 +262,22 @@ textarea{resize:vertical;min-height:70px}
 
 <div class="popup-bg hidden" id="edit-pass-popup">
   <div class="popup-box">
-    <h3>🔒 Acceso restringido</h3>
-    <p style="color:#aaa;font-size:.9rem;margin-bottom:14px">Contraseña de administrador para editar.</p>
-    <input type="password" id="edit-pass-input" placeholder="Contraseña" maxlength="20"
+    <h3>🔒 Verificar administrador</h3>
+    <p style="color:#aaa;font-size:.85rem;margin-bottom:14px">Introduce tus credenciales para editar este registro.</p>
+    <input type="text" id="edit-pass-user" placeholder="Usuario" maxlength="30" style="margin-bottom:8px"
+      onkeydown="if(event.key==='Enter')document.getElementById('edit-pass-input').focus()">
+    <input type="password" id="edit-pass-input" placeholder="Contraseña" maxlength="30"
       onkeydown="if(event.key==='Enter')checkEditPass()">
     <p id="edit-pass-msg" style="color:#ff6b6b;font-size:.85rem;margin-top:8px;min-height:18px"></p>
     <div style="display:flex;gap:10px;justify-content:center;margin-top:14px">
       <button class="btn btn-sm" style="background:#0f3460" onclick="document.getElementById('edit-pass-popup').classList.add('hidden')">Cancelar</button>
-      <button class="btn btn-primary btn-sm" onclick="checkEditPass()">Entrar</button>
+      <button class="btn btn-primary btn-sm" onclick="checkEditPass()">Verificar</button>
     </div>
   </div>
 </div>
 
 <div class="popup-bg hidden" id="edit-popup">
-  <div class="popup-box" style="text-align:left;max-width:440px">
+  <div class="popup-box" style="text-align:left;max-width:460px">
     <h3>✏️ Editar registro</h3>
     <input type="hidden" id="edit-id">
     <input type="hidden" id="edit-row">
@@ -254,138 +302,132 @@ const REDIRECT_URI = 'https://inukisalmacen-code.github.io/fichajes/';
 const SHEET_ID     = '1SpBVvd4PlLqzFWKCRmN5Baoz-OjhfoTA_VobZdVlaOw';
 const SHEET_EMP    = 'Empleados';
 const SHEET_REC    = 'Registros';
+const SHEET_ADM    = 'Admins';
 const SCOPES       = 'https://www.googleapis.com/auth/spreadsheets';
 const API_BASE     = 'https://sheets.googleapis.com/v4/spreadsheets';
 
 // ═══ STATE ═══
 let accessToken = null, tokenExpiry = 0, refreshTimer = null;
-let employees = [], records = [];
-let adminPass = localStorage.getItem('adminPass') || 'admin1234';
-let adminUnlocked = false, pendingEmp = null, pendingEditId = null;
+let employees = [], records = [], admins = [];
+let currentAdmin = null; // {usuario, pass} del admin logueado
+let pendingEmp = null, pendingEditId = null;
 
-// ═══ AUTH ═══
+// ═══ AUTH GOOGLE ═══
 function signIn(){
   const params = new URLSearchParams({
-    client_id: CLIENT_ID,
-    redirect_uri: REDIRECT_URI,
-    response_type: 'token',
-    scope: SCOPES,
-    prompt: 'select_account'
+    client_id: CLIENT_ID, redirect_uri: REDIRECT_URI,
+    response_type: 'token', scope: SCOPES, prompt: 'select_account'
   });
   window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?' + params;
 }
-
 function handleAuthCallback(){
   const hash = new URLSearchParams(window.location.hash.replace('#',''));
   const token = hash.get('access_token');
   if(token){
     accessToken = token;
-    const expiresIn = parseInt(hash.get('expires_in') || '3600');
-    tokenExpiry = Date.now() + expiresIn * 1000;
-    scheduleRefresh(expiresIn);
-    history.replaceState(null, '', window.location.pathname);
+    const exp = parseInt(hash.get('expires_in')||'3600');
+    tokenExpiry = Date.now() + exp*1000;
+    scheduleRefresh(exp);
+    history.replaceState(null,'',window.location.pathname);
     onSignedIn();
   } else {
-    setSyncStatus('err', '— No conectado');
+    setSyncStatus('err','— No conectado');
     document.getElementById('google-login-area').classList.remove('hidden');
   }
 }
-
-function scheduleRefresh(expiresIn){
+function scheduleRefresh(exp){
   clearTimeout(refreshTimer);
-  const delay = Math.max((expiresIn - 120) * 1000, 10000);
   refreshTimer = setTimeout(()=>{
     setSyncStatus('err','⚠ Sesión expirada');
     document.getElementById('btn-reconectar').classList.remove('hidden');
-  }, delay);
+  }, Math.max((exp-120)*1000,10000));
 }
-
 async function onSignedIn(){
   document.getElementById('google-login-area').classList.add('hidden');
   document.getElementById('app-pages').classList.remove('hidden');
-  document.getElementById('nav-btns').style.display = 'flex';
+  document.getElementById('nav-btns').style.display='flex';
   setSyncStatus('syncing','⏳ Cargando...');
   await ensureSheets();
   await loadAll();
   setSyncStatus('ok','✅ Conectado');
   focusQR();
 }
-
-function setSyncStatus(cls, txt){
-  const el = document.getElementById('sync-status');
-  el.className = cls; el.textContent = txt;
+function setSyncStatus(cls,txt){
+  const el=document.getElementById('sync-status');
+  el.className=cls; el.textContent=txt;
 }
 
 // ═══ SHEETS API ═══
-async function sheetsRequest(method, path, body){
-  const res = await fetch(`${API_BASE}/${SHEET_ID}${path}`, {
+async function sheetsReq(method,path,body){
+  const r=await fetch(`${API_BASE}/${SHEET_ID}${path}`,{
     method,
     headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
-    body: body ? JSON.stringify(body) : undefined
+    body:body?JSON.stringify(body):undefined
   });
-  if(!res.ok){ const e = await res.json(); throw new Error(e.error?.message || res.status); }
-  return res.json();
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||r.status);}
+  return r.json();
 }
-
 async function ensureSheets(){
-  try {
-    const meta = await sheetsRequest('GET','?fields=sheets.properties.title');
-    const titles = meta.sheets.map(s=>s.properties.title);
-    const reqs = [];
+  try{
+    const meta=await sheetsReq('GET','?fields=sheets.properties.title');
+    const titles=meta.sheets.map(s=>s.properties.title);
+    const reqs=[];
     if(!titles.includes(SHEET_EMP)) reqs.push({addSheet:{properties:{title:SHEET_EMP}}});
     if(!titles.includes(SHEET_REC)) reqs.push({addSheet:{properties:{title:SHEET_REC}}});
-    if(reqs.length){
-      await sheetsRequest('POST',':batchUpdate',{requests:reqs});
-      if(!titles.includes(SHEET_EMP))
-        await sheetsRequest('PUT',`/values/${SHEET_EMP}!A1:E1?valueInputOption=RAW`,{values:[['id','nombre','pin','puesto','alta']]});
-      if(!titles.includes(SHEET_REC))
-        await sheetsRequest('PUT',`/values/${SHEET_REC}!A1:G1?valueInputOption=RAW`,{values:[['id','empId','empNombre','fecha','hora','tipo','comentario']]});
+    if(!titles.includes(SHEET_ADM)) reqs.push({addSheet:{properties:{title:SHEET_ADM}}});
+    if(reqs.length) await sheetsReq('POST',':batchUpdate',{requests:reqs});
+    if(!titles.includes(SHEET_EMP))
+      await sheetsReq('PUT',`/values/${SHEET_EMP}!A1:E1?valueInputOption=RAW`,{values:[['id','nombre','pin','puesto','alta']]});
+    if(!titles.includes(SHEET_REC))
+      await sheetsReq('PUT',`/values/${SHEET_REC}!A1:I1?valueInputOption=RAW`,{values:[['id','empId','empNombre','fecha','hora','tipo','comentario','editadoPor','fechaEdicion']]});
+    if(!titles.includes(SHEET_ADM)){
+      await sheetsReq('PUT',`/values/${SHEET_ADM}!A1:B1?valueInputOption=RAW`,{values:[['usuario','password']]});
+      // Admin por defecto
+      await sheetsReq('POST',`/values/${SHEET_ADM}!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,{values:[['admin','admin1234']]});
     }
-  } catch(e){ setSyncStatus('err','⚠ Error: '+e.message); }
+  }catch(e){setSyncStatus('err','⚠ Error sheets: '+e.message);}
 }
-
 async function loadAll(){
-  try {
-    const [eR, rR] = await Promise.all([
-      sheetsRequest('GET',`/values/${SHEET_EMP}!A:E`),
-      sheetsRequest('GET',`/values/${SHEET_REC}!A:G`)
+  try{
+    const [eR,rR,aR]=await Promise.all([
+      sheetsReq('GET',`/values/${SHEET_EMP}!A:E`),
+      sheetsReq('GET',`/values/${SHEET_REC}!A:I`),
+      sheetsReq('GET',`/values/${SHEET_ADM}!A:B`)
     ]);
-    employees = (eR.values||[]).slice(1).map(r=>({id:r[0],nombre:r[1],pin:r[2],puesto:r[3],alta:r[4]}));
-    records   = (rR.values||[]).slice(1).map((r,i)=>({
-      id:r[0],empId:r[1],empNombre:r[2],fecha:r[3],hora:r[4],tipo:r[5],comentario:r[6]||'',
+    employees=(eR.values||[]).slice(1).map(r=>({id:r[0],nombre:r[1],pin:r[2],puesto:r[3],alta:r[4]}));
+    records=(rR.values||[]).slice(1).map((r,i)=>({
+      id:r[0],empId:r[1],empNombre:r[2],fecha:r[3],hora:r[4],tipo:r[5],
+      comentario:r[6]||'',editadoPor:r[7]||'',fechaEdicion:r[8]||'',
       fechaISO:isoFromES(r[3]),horaISO:(r[4]||'').slice(0,5),_row:i+2
     })).reverse();
-  } catch(e){ setSyncStatus('err','⚠ Error carga: '+e.message); }
+    admins=(aR.values||[]).slice(1).map(r=>({usuario:r[0],password:r[1]}));
+  }catch(e){setSyncStatus('err','⚠ Error carga: '+e.message);}
 }
-
 function isoFromES(d){
-  if(!d) return '';
-  const p = d.split('/');
-  return p.length===3 ? `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}` : d;
+  if(!d)return'';
+  const p=d.split('/');
+  return p.length===3?`${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`:d;
 }
-
-async function appendRow(sheet, values){
-  await sheetsRequest('POST',`/values/${sheet}!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,{values:[values]});
+async function appendRow(sheet,values){
+  await sheetsReq('POST',`/values/${sheet}!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,{values:[values]});
 }
-
-async function updateRow(sheet, row, values){
-  const col = String.fromCharCode(64+values.length);
-  await sheetsRequest('PUT',`/values/${sheet}!A${row}:${col}${row}?valueInputOption=RAW`,{values:[values]});
+async function updateRow(sheet,row,values){
+  const col=String.fromCharCode(64+values.length);
+  await sheetsReq('PUT',`/values/${sheet}!A${row}:${col}${row}?valueInputOption=RAW`,{values:[values]});
 }
-
-async function deleteRow(sheet, row){
-  const meta = await sheetsRequest('GET','?fields=sheets.properties');
-  const sid = meta.sheets.find(s=>s.properties.title===sheet)?.properties.sheetId;
-  await sheetsRequest('POST',':batchUpdate',{requests:[{deleteDimension:{range:{sheetId:sid,dimension:'ROWS',startIndex:row-1,endIndex:row}}}]});
+async function deleteRow(sheet,row){
+  const meta=await sheetsReq('GET','?fields=sheets.properties');
+  const sid=meta.sheets.find(s=>s.properties.title===sheet)?.properties.sheetId;
+  await sheetsReq('POST',':batchUpdate',{requests:[{deleteDimension:{range:{sheetId:sid,dimension:'ROWS',startIndex:row-1,endIndex:row}}}]});
 }
 
 // ═══ RELOJ ═══
 function tick(){
-  const n = new Date();
-  document.getElementById('clock').textContent = n.toLocaleTimeString('es-ES');
-  document.getElementById('datestr').textContent = n.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const n=new Date();
+  document.getElementById('clock').textContent=n.toLocaleTimeString('es-ES');
+  document.getElementById('datestr').textContent=n.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 }
-setInterval(tick,1000); tick();
+setInterval(tick,1000);tick();
 
 // ═══ NAV ═══
 function showPage(p){
@@ -398,74 +440,120 @@ function showPage(p){
   if(p==='fichar') focusQR();
 }
 
-// ═══ QR ═══
-function focusQR(){ const i=document.getElementById('qr-input'); if(i) i.focus(); }
+// ═══ QR FICHAJE ═══
+function focusQR(){const i=document.getElementById('qr-input');if(i)i.focus();}
 function procesarQRInput(){
-  const inp = document.getElementById('qr-input');
-  const code = inp.value.trim(); inp.value='';
-  if(code) processQR(code);
+  const inp=document.getElementById('qr-input');
+  const code=inp.value.trim();inp.value='';
+  if(code)processQR(code);
 }
 function processQR(code){
-  const emp = employees.find(e=>e.id===code);
+  const emp=employees.find(e=>e.id===code);
   if(!emp){showMsg('❌ QR no reconocido.','err');return;}
-  pendingEmp = emp;
-  document.getElementById('emp-saludo').textContent = '👋 Hola, '+emp.nombre+' — '+emp.puesto;
+  pendingEmp=emp;
+  document.getElementById('emp-saludo').textContent='👋 Hola, '+emp.nombre+' — '+emp.puesto;
   document.getElementById('fichaje-tipo-area').classList.remove('hidden');
-  document.getElementById('comentario').value = '';
+  document.getElementById('comentario').value='';
   document.getElementById('tipo-select').focus();
 }
-
-// ═══ FICHAJE ═══
 async function registrarFichaje(){
-  if(!pendingEmp) return;
-  const tipo = document.getElementById('tipo-select').value;
-  const comentario = document.getElementById('comentario').value.trim();
-  const now = new Date();
-  const fecha = now.toLocaleDateString('es-ES');
-  const hora  = now.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  const id = 'R'+Date.now();
+  if(!pendingEmp)return;
+  const tipo=document.getElementById('tipo-select').value;
+  const comentario=document.getElementById('comentario').value.trim();
+  const now=new Date();
+  const fecha=now.toLocaleDateString('es-ES');
+  const hora=now.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const id='R'+Date.now();
   setSyncStatus('syncing','⏳ Guardando...');
-  try {
-    await appendRow(SHEET_REC,[id,pendingEmp.id,pendingEmp.nombre,fecha,hora,tipo,comentario]);
-    const icons = {'Entrada':'🟢','Inicio Pausa':'🟡','Fin Pausa':'🔵','Salida':'🔴'};
+  try{
+    await appendRow(SHEET_REC,[id,pendingEmp.id,pendingEmp.nombre,fecha,hora,tipo,comentario,'','']);
+    const icons={'Entrada':'🟢','Inicio Pausa':'🟡','Fin Pausa':'🔵','Salida':'🔴'};
     showMsg(icons[tipo]+' <b>'+tipo+'</b> — <b>'+pendingEmp.nombre+'</b><br>'+hora+(comentario?'<br><span style="font-size:.85rem;opacity:.8">💬 '+comentario+'</span>':''),'ok');
-    records.unshift({id,empId:pendingEmp.id,empNombre:pendingEmp.nombre,fecha,hora,tipo,comentario,fechaISO:now.toISOString().slice(0,10),horaISO:hora.slice(0,5)});
+    records.unshift({id,empId:pendingEmp.id,empNombre:pendingEmp.nombre,fecha,hora,tipo,comentario,editadoPor:'',fechaEdicion:'',fechaISO:now.toISOString().slice(0,10),horaISO:hora.slice(0,5)});
     setSyncStatus('ok','✅ Conectado');
-  } catch(e){ showMsg('❌ Error: '+e.message,'err'); setSyncStatus('err','⚠ Error'); }
-  pendingEmp = null;
+  }catch(e){showMsg('❌ Error: '+e.message,'err');setSyncStatus('err','⚠ Error');}
+  pendingEmp=null;
   document.getElementById('fichaje-tipo-area').classList.add('hidden');
-  setTimeout(()=>{ document.getElementById('msg-confirm').style.display='none'; focusQR(); },4000);
+  setTimeout(()=>{document.getElementById('msg-confirm').style.display='none';focusQR();},4000);
 }
 function cancelarFichaje(){
-  pendingEmp = null;
+  pendingEmp=null;
   document.getElementById('fichaje-tipo-area').classList.add('hidden');
-  document.getElementById('msg-confirm').style.display = 'none';
+  document.getElementById('msg-confirm').style.display='none';
   focusQR();
 }
 function showMsg(html,t){
-  const el = document.getElementById('msg-confirm');
-  el.innerHTML=html; el.className='msg-'+(t==='ok'?'ok':'err'); el.style.display='block';
+  const el=document.getElementById('msg-confirm');
+  el.innerHTML=html;el.className='msg-'+(t==='ok'?'ok':'err');el.style.display='block';
 }
 
-// ═══ ADMIN ═══
+// ═══ ADMIN AUTH ═══
 function checkAdminPass(){
-  if(document.getElementById('admin-pass-input').value===adminPass){
-    adminUnlocked=true;
+  const u=document.getElementById('admin-user-input').value.trim();
+  const p=document.getElementById('admin-pass-input').value;
+  const found=admins.find(a=>a.usuario===u&&a.password===p);
+  if(found){
+    currentAdmin=found;
     document.getElementById('admin-lock').classList.add('hidden');
     document.getElementById('admin-panel').classList.remove('hidden');
+    document.getElementById('admin-logged-as').textContent='👤 Conectado como: '+u;
+    document.getElementById('admin-user-input').value='';
     document.getElementById('admin-pass-input').value='';
-    renderEmpList();
-  } else { document.getElementById('admin-lock-msg').textContent='⚠ Contraseña incorrecta.'; }
+    document.getElementById('admin-lock-msg').textContent='';
+    renderEmpList();renderAdminsList();
+  }else{
+    document.getElementById('admin-lock-msg').textContent='⚠ Usuario o contraseña incorrectos.';
+  }
 }
 function lockAdmin(){
-  adminUnlocked=false;
+  currentAdmin=null;
   document.getElementById('admin-lock').classList.remove('hidden');
   document.getElementById('admin-panel').classList.add('hidden');
 }
 function adminTab(t){
-  ['empleados','horas','clave'].forEach(x=>document.getElementById('atab-'+x).classList.toggle('hidden',x!==t));
-  document.querySelectorAll('.admin-tab').forEach((b,i)=>b.classList.toggle('active',['empleados','horas','clave'][i]===t));
-  if(t==='horas') renderHoras();
+  ['empleados','horas','admins'].forEach(x=>document.getElementById('atab-'+x).classList.toggle('hidden',x!==t));
+  document.querySelectorAll('.admin-tab').forEach((b,i)=>b.classList.toggle('active',['empleados','horas','admins'][i]===t));
+  if(t==='horas')renderHoras();
+  if(t==='admins')renderAdminsList();
+}
+
+// ═══ ADMINS GESTIÓN ═══
+async function altaAdmin(){
+  const u=document.getElementById('new-admin-user').value.trim();
+  const p=document.getElementById('new-admin-pass').value;
+  const p2=document.getElementById('new-admin-pass2').value;
+  const msg=document.getElementById('admins-msg');
+  if(!u||!p){msg.textContent='⚠ Usuario y contraseña obligatorios.';msg.style.color='#ff6b6b';return;}
+  if(p!==p2){msg.textContent='⚠ Las contraseñas no coinciden.';msg.style.color='#ff6b6b';return;}
+  if(p.length<4){msg.textContent='⚠ Mínimo 4 caracteres.';msg.style.color='#ff6b6b';return;}
+  if(admins.find(a=>a.usuario===u)){msg.textContent='⚠ Ese usuario ya existe.';msg.style.color='#ff6b6b';return;}
+  setSyncStatus('syncing','⏳ Guardando...');
+  try{
+    await appendRow(SHEET_ADM,[u,p]);
+    admins.push({usuario:u,password:p});
+    msg.textContent='✅ Administrador añadido.';msg.style.color='#80ffdb';
+    ['new-admin-user','new-admin-pass','new-admin-pass2'].forEach(id=>document.getElementById(id).value='');
+    renderAdminsList();setSyncStatus('ok','✅ Conectado');
+  }catch(e){msg.textContent='❌ Error: '+e.message;msg.style.color='#ff6b6b';}
+}
+function renderAdminsList(){
+  const div=document.getElementById('admins-list');
+  if(!admins.length){div.innerHTML='<p style="color:#aaa">Sin administradores.</p>';return;}
+  div.innerHTML=`<table class="emp-table"><thead><tr><th>Usuario</th><th>Acciones</th></tr></thead>
+  <tbody>${admins.map(a=>`<tr><td>${a.usuario}</td>
+  <td>${a.usuario!=='admin'?`<button class="btn btn-danger btn-sm" onclick="bajaAdmin('${a.usuario}')">Eliminar</button>`:'<span style="color:#555;font-size:.8rem">Admin principal</span>'}</td>
+  </tr>`).join('')}</tbody></table>`;
+}
+async function bajaAdmin(usuario){
+  if(!confirm('¿Eliminar administrador '+usuario+'?'))return;
+  setSyncStatus('syncing','⏳ Eliminando...');
+  try{
+    const meta=await sheetsReq('GET',`/values/${SHEET_ADM}!A:A`);
+    const rowIdx=(meta.values||[]).findIndex(r=>r[0]===usuario);
+    if(rowIdx>0)await deleteRow(SHEET_ADM,rowIdx+1);
+    admins=admins.filter(a=>a.usuario!==usuario);
+    renderAdminsList();setSyncStatus('ok','✅ Conectado');
+  }catch(e){alert('Error: '+e.message);}
 }
 
 // ═══ EMPLEADOS ═══
@@ -480,13 +568,13 @@ async function altaEmpleado(){
   const id='EMP-'+Date.now();
   const alta=new Date().toLocaleDateString('es-ES');
   setSyncStatus('syncing','⏳ Guardando...');
-  try {
+  try{
     await appendRow(SHEET_EMP,[id,n,p,pu||'—',alta]);
     employees.push({id,nombre:n,pin:p,puesto:pu||'—',alta});
     msg.textContent='✅ Empleado dado de alta.';msg.style.color='#80ffdb';
     ['emp-nombre','emp-pin','emp-puesto'].forEach(x=>document.getElementById(x).value='');
-    renderEmpList(); setSyncStatus('ok','✅ Conectado');
-  } catch(e){ msg.textContent='❌ Error: '+e.message;msg.style.color='#ff6b6b'; }
+    renderEmpList();setSyncStatus('ok','✅ Conectado');
+  }catch(e){msg.textContent='❌ Error: '+e.message;msg.style.color='#ff6b6b';}
 }
 function renderEmpList(){
   const div=document.getElementById('emp-list');
@@ -498,26 +586,26 @@ function renderEmpList(){
   </tbody></table>`;
 }
 async function bajaEmpleado(id){
-  if(!confirm('¿Eliminar este empleado?')) return;
+  if(!confirm('¿Eliminar este empleado?'))return;
   setSyncStatus('syncing','⏳ Eliminando...');
-  try {
-    const meta = await sheetsRequest('GET',`/values/${SHEET_EMP}!A:A`);
-    const rowIdx = (meta.values||[]).findIndex(r=>r[0]===id);
-    if(rowIdx>0) await deleteRow(SHEET_EMP,rowIdx+1);
+  try{
+    const meta=await sheetsReq('GET',`/values/${SHEET_EMP}!A:A`);
+    const rowIdx=(meta.values||[]).findIndex(r=>r[0]===id);
+    if(rowIdx>0)await deleteRow(SHEET_EMP,rowIdx+1);
     employees=employees.filter(e=>e.id!==id);
-    renderEmpList(); setSyncStatus('ok','✅ Conectado');
-  } catch(e){ alert('Error: '+e.message); }
+    renderEmpList();setSyncStatus('ok','✅ Conectado');
+  }catch(e){alert('Error: '+e.message);}
 }
 
 // ═══ QR POPUP ═══
 function showQR(id){
-  const emp=employees.find(e=>e.id===id); if(!emp) return;
+  const emp=employees.find(e=>e.id===id);if(!emp)return;
   document.getElementById('qr-popup-name').textContent=emp.nombre+' — '+emp.puesto;
-  const div=document.getElementById('qr-div'); div.innerHTML='';
+  const div=document.getElementById('qr-div');div.innerHTML='';
   new QRCode(div,{text:emp.id,width:200,height:200,colorDark:'#00b4d8',colorLight:'#ffffff'});
   document.getElementById('qr-popup').classList.remove('hidden');
 }
-function closeQR(){ document.getElementById('qr-popup').classList.add('hidden'); }
+function closeQR(){document.getElementById('qr-popup').classList.add('hidden');}
 function printQR(){
   const name=document.getElementById('qr-popup-name').textContent;
   setTimeout(()=>{
@@ -542,31 +630,79 @@ function printQR(){
 }
 
 // ═══ HORAS ═══
+function getDateRange(){
+  const modo=document.getElementById('h-modo').value;
+  const now=new Date();
+  if(modo==='semana'){
+    const day=now.getDay()||7;
+    const mon=new Date(now);mon.setDate(now.getDate()-day+1);
+    const sun=new Date(mon);sun.setDate(mon.getDate()+6);
+    return{desde:mon.toISOString().slice(0,10),hasta:sun.toISOString().slice(0,10),label:'Semana actual'};
+  }
+  if(modo==='mes'){
+    const desde=new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10);
+    const hasta=new Date(now.getFullYear(),now.getMonth()+1,0).toISOString().slice(0,10);
+    return{desde,hasta,label:'Mes actual'};
+  }
+  return{
+    desde:document.getElementById('h-desde').value,
+    hasta:document.getElementById('h-hasta').value,
+    label:'Rango personalizado'
+  };
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('h-modo').addEventListener('change',()=>{
+    const custom=document.getElementById('h-modo').value==='custom';
+    document.getElementById('h-custom-wrap').style.display=custom?'flex':'none';
+    renderHoras();
+  });
+});
 function renderHoras(){
-  const desde=document.getElementById('h-desde').value;
-  const hasta=document.getElementById('h-hasta').value;
-  const res={};
-  employees.forEach(e=>{res[e.id]={nombre:e.nombre,puesto:e.puesto,minutos:0,dias:new Set()};});
+  const {desde,hasta}=getDateRange();
+  const objetivo=parseFloat(document.getElementById('h-objetivo').value)||40;
+  const objMin=objetivo*60;
   let recs=[...records];
-  if(desde) recs=recs.filter(r=>r.fechaISO>=desde);
-  if(hasta) recs=recs.filter(r=>r.fechaISO<=hasta);
-  employees.forEach(emp=>{
-    const er=recs.filter(r=>r.empId===emp.id).sort((a,b)=>(a.fechaISO+a.horaISO).localeCompare(b.fechaISO+b.horaISO));
-    let entrada=null;
+  if(desde)recs=recs.filter(r=>r.fechaISO>=desde);
+  if(hasta)recs=recs.filter(r=>r.fechaISO<=hasta);
+
+  const list=document.getElementById('horas-list');
+  if(!employees.length){list.innerHTML='<p style="color:#aaa">Sin empleados.</p>';return;}
+
+  list.innerHTML=employees.map(emp=>{
+    const er=recs.filter(r=>r.empId===emp.id)
+      .sort((a,b)=>(a.fechaISO+a.horaISO).localeCompare(b.fechaISO+b.horaISO));
+    let minutos=0,dias=new Set(),entrada=null;
     er.forEach(r=>{
-      if(r.tipo==='Entrada') entrada={fecha:r.fechaISO,hora:r.horaISO};
+      if(r.tipo==='Entrada')entrada={fecha:r.fechaISO,hora:r.horaISO};
       if(r.tipo==='Salida'&&entrada){
-        const ini=new Date(entrada.fecha+'T'+entrada.hora);
-        const fin=new Date(r.fechaISO+'T'+r.horaISO);
-        res[emp.id].minutos+=Math.max(0,(fin-ini)/60000);
-        res[emp.id].dias.add(entrada.fecha);
+        const ini=new Date(entrada.fecha+'T'+(entrada.hora||'00:00'));
+        const fin=new Date(r.fechaISO+'T'+(r.horaISO||'00:00'));
+        minutos+=Math.max(0,(fin-ini)/60000);
+        dias.add(entrada.fecha);
         entrada=null;
       }
     });
-  });
-  document.getElementById('horas-grid').innerHTML=Object.values(res).map(r=>{
-    const h=Math.floor(r.minutos/60),m=Math.round(r.minutos%60);
-    return `<div class="hora-card"><div class="name">${r.nombre}</div><div class="val">${h}h ${m}m</div><div class="sub">${r.puesto} · ${r.dias.size} día(s)</div></div>`;
+    const h=Math.floor(minutos/60),m=Math.round(minutos%60);
+    const diff=minutos-objMin;
+    const diffH=Math.floor(Math.abs(diff)/60),diffM=Math.round(Math.abs(diff)%60);
+    const pct=Math.min((minutos/objMin)*100,100);
+    const over=diff>0,zero=Math.abs(diff)<1;
+    const barClass=zero?'ok':over?'over':'under';
+    const diffClass=zero?'zero':over?'pos':'neg';
+    const diffTxt=zero?'✅ Objetivo cumplido exacto'
+      :over?`+${diffH}h ${diffM}m de más`
+      :`-${diffH}h ${diffM}m pendientes`;
+    return `<div class="hora-card">
+      <div class="hc-header">
+        <div><div class="hc-name">${emp.nombre}</div><div class="hc-puesto">${emp.puesto} · ${dias.size} día(s)</div></div>
+        <div class="hc-nums">
+          <div class="hc-total">${h}h ${m}m</div>
+          <div class="hc-diff ${diffClass}">${diffTxt}</div>
+        </div>
+      </div>
+      <div class="hc-bar-bg"><div class="hc-bar ${barClass}" style="width:${pct}%"></div></div>
+      <div class="hc-objetivo">${pct.toFixed(1)}% del objetivo (${objetivo}h)</div>
+    </div>`;
   }).join('');
 }
 
@@ -577,10 +713,10 @@ function getFilteredRecords(){
   const fe=document.getElementById('filter-emp').value;
   const ft=document.getElementById('filter-tipo').value;
   return records.filter(r=>{
-    if(desde&&r.fechaISO<desde) return false;
-    if(hasta&&r.fechaISO>hasta) return false;
-    if(fe&&r.empId!==fe) return false;
-    if(ft&&r.tipo!==ft) return false;
+    if(desde&&r.fechaISO<desde)return false;
+    if(hasta&&r.fechaISO>hasta)return false;
+    if(fe&&r.empId!==fe)return false;
+    if(ft&&r.tipo!==ft)return false;
     return true;
   });
 }
@@ -590,17 +726,19 @@ function populateEmpFilter(){
   employees.forEach(e=>s.innerHTML+=`<option value="${e.id}">${e.nombre}</option>`);
   s.value=cur;
   const s2=document.getElementById('edit-emp');
-  if(s2) s2.innerHTML=employees.map(e=>`<option value="${e.id}">${e.nombre}</option>`).join('');
+  if(s2)s2.innerHTML=employees.map(e=>`<option value="${e.id}">${e.nombre}</option>`).join('');
 }
 function renderRegistros(){
   const data=getFilteredRecords();
   const tbody=document.getElementById('registros-body');
   const cl={'Entrada':'tipo-Entrada','Salida':'tipo-Salida','Inicio Pausa':'tipo-InicioP','Fin Pausa':'tipo-FinP'};
-  if(!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#aaa;padding:20px">Sin registros</td></tr>';return;}
+  if(!data.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:#aaa;padding:20px">Sin registros</td></tr>';return;}
   tbody.innerHTML=data.map(r=>`<tr>
     <td>${r.fecha}</td><td>${r.hora}</td><td>${r.empNombre}</td>
     <td class="${cl[r.tipo]||''}">${r.tipo}</td>
-    <td style="color:#aaa;font-size:.82rem;max-width:160px;word-break:break-word">${r.comentario||'—'}</td>
+    <td style="color:#aaa;font-size:.8rem;max-width:120px;word-break:break-word">${r.comentario||'—'}</td>
+    <td style="color:#ffd166;font-size:.78rem">${r.editadoPor||'—'}</td>
+    <td style="color:#aaa;font-size:.78rem">${r.fechaEdicion||'—'}</td>
     <td><button class="btn btn-warning btn-sm" onclick="openEdit('${r.id}')">✏️</button></td>
   </tr>`).join('');
 }
@@ -611,28 +749,35 @@ function clearFilters(){
 function exportCSV(){
   const data=getFilteredRecords();
   if(!data.length){alert('Sin datos.');return;}
-  const rows=[['Fecha','Hora','Empleado','Tipo','Comentario'],...data.map(r=>[r.fecha,r.hora,r.empNombre,r.tipo,(r.comentario||'').replace(/"/g,"'")])];
-  const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const rows=[['Fecha','Hora','Empleado','Tipo','Comentario','Editado por','Fecha edición'],
+    ...data.map(r=>[r.fecha,r.hora,r.empNombre,r.tipo,(r.comentario||''),(r.editadoPor||''),(r.fechaEdicion||'')])];
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,"'")}"`).join(',')).join('\n');
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
+  const a=document.createElement('a');a.href=url;
   const desde=document.getElementById('filter-desde').value;
   const hasta=document.getElementById('filter-hasta').value;
   a.download=`fichajes${desde&&hasta?`_${desde}_${hasta}`:'_'+new Date().toISOString().slice(0,10)}.csv`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
 }
 
-// ═══ EDIT ═══
+// ═══ EDIT REGISTRO ═══
 function checkEditPass(){
-  if(document.getElementById('edit-pass-input').value===adminPass){
+  const u=document.getElementById('edit-pass-user').value.trim();
+  const p=document.getElementById('edit-pass-input').value;
+  const found=admins.find(a=>a.usuario===u&&a.password===p);
+  if(found){
+    currentAdmin=found;
     document.getElementById('edit-pass-popup').classList.add('hidden');
-    openEditDirect(pendingEditId); pendingEditId=null;
-  } else { document.getElementById('edit-pass-msg').textContent='⚠ Contraseña incorrecta.'; }
+    openEditDirect(pendingEditId);pendingEditId=null;
+  }else{
+    document.getElementById('edit-pass-msg').textContent='⚠ Credenciales incorrectas.';
+  }
 }
 function openEdit(id){
-  if(!adminUnlocked){
+  if(!currentAdmin){
     pendingEditId=id;
+    document.getElementById('edit-pass-user').value='';
     document.getElementById('edit-pass-input').value='';
     document.getElementById('edit-pass-msg').textContent='';
     document.getElementById('edit-pass-popup').classList.remove('hidden');
@@ -642,7 +787,7 @@ function openEdit(id){
 }
 function openEditDirect(id){
   populateEmpFilter();
-  const r=records.find(x=>x.id===id); if(!r) return;
+  const r=records.find(x=>x.id===id);if(!r)return;
   document.getElementById('edit-id').value=r.id;
   document.getElementById('edit-row').value=r._row||'';
   document.getElementById('edit-fecha').value=r.fechaISO||'';
@@ -652,11 +797,11 @@ function openEditDirect(id){
   document.getElementById('edit-comentario').value=r.comentario||'';
   document.getElementById('edit-popup').classList.remove('hidden');
 }
-function closeEdit(){ document.getElementById('edit-popup').classList.add('hidden'); }
+function closeEdit(){document.getElementById('edit-popup').classList.add('hidden');}
 async function guardarEdit(){
   const id=document.getElementById('edit-id').value;
   const row=parseInt(document.getElementById('edit-row').value);
-  const idx=records.findIndex(x=>x.id===id); if(idx<0) return;
+  const idx=records.findIndex(x=>x.id===id);if(idx<0)return;
   const fechaISO=document.getElementById('edit-fecha').value;
   const horaISO=document.getElementById('edit-hora').value;
   const empId=document.getElementById('edit-emp').value;
@@ -664,37 +809,25 @@ async function guardarEdit(){
   const tipo=document.getElementById('edit-tipo').value;
   const comentario=document.getElementById('edit-comentario').value.trim();
   const fecha=fechaISO?new Date(fechaISO+'T12:00:00').toLocaleDateString('es-ES'):'';
+  const editadoPor=currentAdmin?currentAdmin.usuario:'desconocido';
+  const fechaEdicion=new Date().toLocaleString('es-ES');
   setSyncStatus('syncing','⏳ Guardando...');
-  try {
-    if(row) await updateRow(SHEET_REC,row,[id,empId,emp?emp.nombre:records[idx].empNombre,fecha,horaISO+':00',tipo,comentario]);
-    records[idx]={...records[idx],empId,empNombre:emp?emp.nombre:records[idx].empNombre,fecha,fechaISO,hora:horaISO+':00',horaISO,tipo,comentario};
-    setSyncStatus('ok','✅ Conectado'); closeEdit(); renderRegistros();
-  } catch(e){ alert('Error: '+e.message); setSyncStatus('err','⚠ Error'); }
+  try{
+    if(row)await updateRow(SHEET_REC,row,[id,empId,emp?emp.nombre:records[idx].empNombre,fecha,horaISO+':00',tipo,comentario,editadoPor,fechaEdicion]);
+    records[idx]={...records[idx],empId,empNombre:emp?emp.nombre:records[idx].empNombre,fecha,fechaISO,hora:horaISO+':00',horaISO,tipo,comentario,editadoPor,fechaEdicion};
+    setSyncStatus('ok','✅ Conectado');closeEdit();renderRegistros();
+  }catch(e){alert('Error: '+e.message);setSyncStatus('err','⚠ Error');}
 }
 async function eliminarRegistro(){
   const id=document.getElementById('edit-id').value;
   const row=parseInt(document.getElementById('edit-row').value);
-  if(!confirm('¿Eliminar este registro?')) return;
+  if(!confirm('¿Eliminar este registro?'))return;
   setSyncStatus('syncing','⏳ Eliminando...');
-  try {
-    if(row) await deleteRow(SHEET_REC,row);
+  try{
+    if(row)await deleteRow(SHEET_REC,row);
     records=records.filter(x=>x.id!==id);
-    setSyncStatus('ok','✅ Conectado'); closeEdit(); renderRegistros();
-  } catch(e){ alert('Error: '+e.message); }
-}
-
-// ═══ CLAVE ═══
-function cambiarClave(){
-  const actual=document.getElementById('clave-actual').value;
-  const nueva=document.getElementById('clave-nueva').value;
-  const nueva2=document.getElementById('clave-nueva2').value;
-  const msg=document.getElementById('clave-msg');
-  if(actual!==adminPass){msg.textContent='⚠ Contraseña actual incorrecta.';msg.style.color='#ff6b6b';return;}
-  if(nueva.length<4){msg.textContent='⚠ Mínimo 4 caracteres.';msg.style.color='#ff6b6b';return;}
-  if(nueva!==nueva2){msg.textContent='⚠ No coinciden.';msg.style.color='#ff6b6b';return;}
-  adminPass=nueva; localStorage.setItem('adminPass',adminPass);
-  msg.textContent='✅ Contraseña actualizada.';msg.style.color='#80ffdb';
-  ['clave-actual','clave-nueva','clave-nueva2'].forEach(id=>document.getElementById(id).value='');
+    setSyncStatus('ok','✅ Conectado');closeEdit();renderRegistros();
+  }catch(e){alert('Error: '+e.message);}
 }
 
 // ═══ INIT ═══
