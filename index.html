@@ -254,7 +254,8 @@ textarea{resize:vertical;min-height:70px}
 
 <script>
 // ═══ CONFIG ═══
-const CLIENT_ID   = '1036795389078-usmg8te1vqontted81mdasneh4idvqae.apps.googleusercontent.com';
+const CLIENT_ID   = '1036795389078-8bogpc0949asllv1bnddvrpp4q92gqs0.apps.googleusercontent.com';
+const REDIRECT_URI = 'https://inukisalmacen-code.github.io/fichajes/';
 const SHEET_ID    = '1SpBVvd4PlLqzFWKCRmN5Baoz-OjhfoTA_VobZdVlaOw';
 const SHEET_EMP   = 'Empleados';
 const SHEET_REC   = 'Registros';
@@ -749,7 +750,7 @@ function cambiarClave(){
 }
 
 // ═══ INIT ═══
-initGSI();
+handleAuthCallback();
 </script>
 </body>
 </html>
